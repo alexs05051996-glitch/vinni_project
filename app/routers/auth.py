@@ -9,6 +9,13 @@ from app.database import get_db
 from app.deps import get_optional_user
 from app.flash import add_flash
 from app.models import User
+from app.ratelimit import (
+    LOGIN_LIMIT,
+    LOGIN_LIMIT_LONG,
+    REGISTER_LIMIT,
+    REGISTER_LIMIT_LONG,
+    limiter,
+)
 from app.schemas import RegistrationIn
 from app.security import hash_password, verify_password
 from app.templating import render
@@ -28,6 +35,8 @@ def register_page(
 
 
 @router.post("/register")
+@limiter.limit(REGISTER_LIMIT)
+@limiter.limit(REGISTER_LIMIT_LONG)
 def register(
     request: Request,
     email: str = Form(...),
@@ -84,6 +93,8 @@ def login_page(
 
 
 @router.post("/login")
+@limiter.limit(LOGIN_LIMIT)
+@limiter.limit(LOGIN_LIMIT_LONG)
 def login(
     request: Request,
     email: str = Form(...),

@@ -25,6 +25,7 @@ from app.deps import get_optional_user, require_user
 from app.flash import add_flash
 from app.models import Subscription, User
 from app.security import new_uuid
+from app.ratelimit import trial_guard
 from app.services.remnawave import RemnawaveError, get_client
 from app.templating import render
 
@@ -227,7 +228,7 @@ def buy(
     return RedirectResponse("/dashboard", status_code=303)
 
 
-@router.post("/dashboard/trial")
+@router.post("/dashboard/trial", dependencies=[Depends(trial_guard)])
 def trial(
     request: Request,
     user: User = Depends(require_user),

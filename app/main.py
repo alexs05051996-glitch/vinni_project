@@ -5,11 +5,18 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
+from slowapi.errors import RateLimitExceeded
 from starlette.middleware.sessions import SessionMiddleware
 
 from app.config import BASE_DIR, SECRET_KEY, SESSION_HTTPS_ONLY
 from app.deps import Forbidden, NotAuthenticated
 from app.init_db import init_db
+from app.ratelimit import (
+    TooManyRequests,
+    limiter,
+    rate_limit_exceeded_handler,
+    too_many_requests_handler,
+)
 from app.routers import admin, auth, downloads, pages, subscriptions
 from app.templating import render
 
@@ -22,6 +29,11 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="ВИННИ", lifespan=lifespan)
+
+# --- rate limiting (защита от ботов и брутфорса) ---
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
+app.add_exception_handler(TooManyRequests, too_many_requests_handler)
 
 app.add_middleware(
     SessionMiddleware,
