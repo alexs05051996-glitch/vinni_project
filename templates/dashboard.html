@@ -20,11 +20,13 @@
         <a href="/dashboard/pay" class="rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold px-4 py-3 transition-colors">
           Пополнить (ЮKassa / СБП)
         </a>
-        <form method="post" action="/dashboard/topup">
-          <button type="submit" class="rounded-xl border border-emerald-700/60 text-emerald-300 hover:bg-emerald-900/30 font-semibold px-4 py-3 transition-colors">
-            Тест +{{ '%.0f'|format(topup_amount) }} ₽
-          </button>
-        </form>
+        {% if not IS_PRODUCTION %}
+          <form method="post" action="/dashboard/topup">
+            <button type="submit" class="rounded-xl border border-emerald-700/60 text-emerald-300 hover:bg-emerald-900/30 font-semibold px-4 py-3 transition-colors">
+              Тест +{{ '%.0f'|format(topup_amount) }} ₽
+            </button>
+          </form>
+        {% endif %}
       </div>
     </div>
   </div>

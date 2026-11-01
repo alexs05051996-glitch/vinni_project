@@ -4,12 +4,13 @@ import logging
 import secrets
 from datetime import datetime, timedelta
 
-from fastapi import APIRouter, Depends, Form, Request
+from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 
 from app.config import (
     IOS_CLIENTS,
+    IS_PRODUCTION,
     PAYMENT_AMOUNTS,
     PLANS,
     REMNAWAVE_HWID_LIMIT,
@@ -120,6 +121,10 @@ def topup(
     user: User = Depends(require_user),
     db: Session = Depends(get_db),
 ):
+    # Тестовое пополнение отключено в продакшене
+    if IS_PRODUCTION:
+        raise HTTPException(status_code=404, detail="Not Found")
+
     user.balance = (user.balance or 0.0) + TOPUP_AMOUNT
     db.add(user)
     db.commit()
@@ -144,6 +149,10 @@ def pay_confirm(
     user: User = Depends(require_user),
     db: Session = Depends(get_db),
 ):
+    # Тестовое подтверждение оплаты отключено в продакшене
+    if IS_PRODUCTION:
+        raise HTTPException(status_code=404, detail="Not Found")
+
     if amount is None or amount <= 0:
         add_flash(request, "Укажите корректную сумму пополнения.", "error")
         return RedirectResponse("/dashboard/pay", status_code=303)

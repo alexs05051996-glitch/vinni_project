@@ -38,6 +38,11 @@ def _get_float(name: str, default: float) -> float:
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret-change-me")
 SESSION_HTTPS_ONLY = _get_bool("SESSION_HTTPS_ONLY", False)
 
+# --- Окружение ---
+# "production" отключает тестовые функции (тестовое пополнение и т.п.)
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development").strip().lower()
+IS_PRODUCTION = ENVIRONMENT == "production"
+
 # --- База данных (легко переключается на PostgreSQL сменой переменной) ---
 DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'vinni.db'}")
 
