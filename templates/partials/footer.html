@@ -1,9 +1,24 @@
 <footer class="border-t border-slate-800/80 mt-16">
-  <div class="max-w-6xl mx-auto px-4 py-8 text-sm text-slate-500 flex flex-col md:flex-row items-center justify-between gap-4">
-    <p>© {{ 2026 }} ВИННИ. Доступ к цифровому сервису.</p>
-    <p class="text-center md:text-right max-w-lg">
-      Сервис предоставляет доступ к цифровому сервису. Пользователь самостоятельно
-      отвечает за соблюдение законов своей юрисдикции.
+  <div class="max-w-6xl mx-auto px-4 py-10 flex flex-col gap-5 text-sm text-slate-500">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+      <p>© {{ 2026 }} ВИННИ. Доступ к цифровому сервису.</p>
+      <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+        <a href="/terms" class="hover:text-slate-300 transition-colors">Публичная оферта</a>
+        <a href="/privacy" class="hover:text-slate-300 transition-colors">Политика конфиденциальности</a>
+      </nav>
+    </div>
+
+    <div class="text-center md:text-left">
+      <p>Самозанятый {{ owner_name }}, ИНН: {{ owner_inn }}</p>
+      <p class="mt-1">
+        Контакт:
+        <a href="mailto:{{ contact_email }}" class="hover:text-slate-300 transition-colors">{{ contact_email }}</a>
+      </p>
+    </div>
+
+    <p class="text-center md:text-left max-w-3xl text-slate-600">
+      Сервис предоставляет доступ к цифровому сервису по подписке. Пользователь самостоятельно
+      отвечает за соблюдение законов своей юрисдикции. Итоговые условия регулируются Публичной офертой.
     </p>
   </div>
 </footer>

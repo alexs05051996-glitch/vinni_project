@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Политика конфиденциальности — ВИННИ{% endblock %}
+
+{% block content %}
+<section class="max-w-3xl mx-auto px-4 py-16">
+  <h1 class="text-3xl font-bold text-white">Политика конфиденциальности</h1>
+  <p class="mt-2 text-sm text-slate-500">
+    Порядок обработки персональных данных в сервисе «ВИННИ». Редакция 2026 года.
+  </p>
+
+  <div class="mt-6 rounded-2xl border border-slate-800 bg-slate-900/60 p-5 text-sm text-slate-300">
+    <p><span class="text-slate-500">Оператор:</span> Самозанятый {{ owner_name }}</p>
+    <p class="mt-1"><span class="text-slate-500">ИНН:</span> {{ owner_inn }}</p>
+    <p class="mt-1"><span class="text-slate-500">Контакт:</span>
+      <a href="mailto:{{ contact_email }}" class="text-brand-400 hover:text-brand-300">{{ contact_email }}</a>
+    </p>
+  </div>
+
+  <div class="mt-8 space-y-6 text-sm leading-relaxed text-slate-300">
+    <section>
+      <h2 class="text-lg font-semibold text-white">1. Общие положения</h2>
+      <p class="mt-2">Настоящая Политика описывает, какие данные собирает Сервис, как они используются, хранятся и защищаются. Используя Сервис, Пользователь соглашается с данной Политикой.</p>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold text-white">2. Какие данные мы собираем</h2>
+      <p class="mt-2">Мы обрабатываем минимально необходимые данные:</p>
+      <ul class="mt-2 list-disc list-inside space-y-1">
+        <li>адрес электронной почты и хеш пароля — для создания и защиты аккаунта;</li>
+        <li>сведения о приобретённых подписках и балансе;</li>
+        <li>технические данные (IP-адрес, тип устройства и браузера, cookies сессии) — для работы и защиты Сервиса.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold text-white">3. Цели обработки</h2>
+      <p class="mt-2">Данные обрабатываются для предоставления доступа, проведения оплаты, технической поддержки, а также для предотвращения злоупотреблений и защиты от ботов и брутфорса.</p>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold text-white">4. Правовые основания</h2>
+      <p class="mt-2">Обработка осуществляется на основании согласия Пользователя и в целях исполнения договора (Публичной оферты).</p>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold text-white">5. Хранение и защита</h2>
+      <p class="mt-2">Пароли хранятся в виде необратимых хешей. Доступ к данным ограничен и защищён организационными и техническими мерами. Данные хранятся в течение срока, необходимого для целей обработки.</p>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold text-white">6. Cookies и сессии</h2>
+      <p class="mt-2">Сервис использует сессионные cookies для авторизации. Cookies не передаются третьим лицам в рекламных целях.</p>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold text-white">7. Передача третьим лицам</h2>
+      <p class="mt-2">Данные не продаются и не передаются третьим лицам, за исключением случаев, необходимых для проведения оплаты (платёжные сервисы) или предусмотренных законом.</p>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold text-white">8. Права пользователя</h2>
+      <p class="mt-2">Пользователь вправе запросить доступ к своим данным, их уточнение или удаление, направив обращение на контактный адрес.</p>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold text-white">9. Изменения Политики</h2>
+      <p class="mt-2">Оператор вправе обновлять Политику, публикуя новую редакцию на этой странице.</p>
+    </section>
+
+    <section>
+      <h2 class="text-lg font-semibold text-white">10. Контакты</h2>
+      <p class="mt-2">По любым вопросам, связанным с обработкой данных, обращайтесь:
+        <a href="mailto:{{ contact_email }}" class="text-brand-400 hover:text-brand-300">{{ contact_email }}</a>.
+      </p>
+    </section>
+  </div>
+</section>
+{% endblock %}

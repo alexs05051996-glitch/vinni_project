@@ -53,6 +53,11 @@ SUB_BASE_URL = os.getenv("SUB_BASE_URL", "https://sub.vinni.fyi").rstrip("/")
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@vinni.fyi")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin")
 
+# --- Реквизиты владельца / контакты (для футера и правовых страниц) ---
+OWNER_NAME = os.getenv("OWNER_NAME", "[Ваше ФИО]")
+OWNER_INN = os.getenv("OWNER_INN", "[Ваш ИНН]")
+CONTACT_EMAIL = os.getenv("CONTACT_EMAIL", "support@vinni.fyi")
+
 # --- Интеграция с панелью Remnawave ---
 # REMNAWAVE_ENABLED=false включает mock-режим (без обращения к панели)
 REMNAWAVE_ENABLED = _get_bool("REMNAWAVE_ENABLED", False)

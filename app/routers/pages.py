@@ -41,3 +41,21 @@ def dashboard(
             "topup_amount": TOPUP_AMOUNT,
         },
     )
+
+
+@router.get("/terms")
+def terms_page(
+    request: Request,
+    user: User | None = Depends(get_optional_user),
+):
+    """Публичная оферта (для модерации платёжной системы)."""
+    return render(request, "terms.html")
+
+
+@router.get("/privacy")
+def privacy_page(
+    request: Request,
+    user: User | None = Depends(get_optional_user),
+):
+    """Политика конфиденциальности."""
+    return render(request, "privacy.html")
