@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% import "macros/ui.html" as ui %}
+
+{% block title %}Личный кабинет — ВИННИ{% endblock %}
+
+{% block content %}
+<section class="max-w-6xl mx-auto px-4 py-10">
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-bold text-white">Личный кабинет</h1>
+      <p class="mt-1 text-slate-400">{{ user.email }}</p>
+    </div>
+
+    <div class="flex items-center gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 px-6 py-4">
+      <div>
+        <p class="text-xs uppercase tracking-wide text-slate-500">Баланс</p>
+        <p class="text-2xl font-extrabold text-white">{{ '%.0f'|format(user.balance) }} ₽</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="/dashboard/pay" class="rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold px-4 py-3 transition-colors">
+          Пополнить (ЮKassa / СБП)
+        </a>
+        <form method="post" action="/dashboard/topup">
+          <button type="submit" class="rounded-xl border border-emerald-700/60 text-emerald-300 hover:bg-emerald-900/30 font-semibold px-4 py-3 transition-colors">
+            Тест +{{ '%.0f'|format(topup_amount) }} ₽
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-8 rounded-2xl border border-slate-800 bg-slate-900/60 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <h2 class="text-lg font-semibold text-white">Пробный доступ</h2>
+      <p class="mt-1 text-sm text-slate-400">Бесплатно на 3 дня, 10 ГБ трафика, все платформы. Один раз на аккаунт.</p>
+    </div>
+    <div class="sm:min-w-[260px]">
+      {{ ui.trial_button(user, wide=True) }}
+    </div>
+  </div>
+
+  <h2 class="mt-12 text-2xl font-bold text-white">Мои подписки</h2>
+  {% if subscriptions %}
+    <div class="mt-5 overflow-hidden rounded-2xl border border-slate-800">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-900/80 text-slate-400">
+          <tr>
+            <th class="text-left font-medium px-4 py-3">Тариф</th>
+            <th class="text-left font-medium px-4 py-3">Статус</th>
+            <th class="text-left font-medium px-4 py-3">Подключение</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-800">
+          {% for sub in subscriptions %}
+            <tr class="bg-slate-900/40">
+              <td class="px-4 py-3 text-white">{{ sub.plan_name }}</td>
+              <td class="px-4 py-3">{{ ui.subscription_status(sub) }}</td>
+              <td class="px-4 py-3">
+                <a href="/sub/{{ sub.uuid }}"
+                   class="inline-flex items-center rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-sm font-medium px-3 py-1.5 transition-colors">
+                  Подключиться →
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="mt-5 text-slate-400">У вас пока нет активных подписок. Выберите тариф ниже.</p>
+  {% endif %}
+
+  <h2 class="mt-12 text-2xl font-bold text-white">Купить тариф</h2>
+  <div class="mt-6 grid gap-6 md:grid-cols-3">
+    {% for key, plan in plans.items() %}
+      {{ ui.plan_card(key, plan, buy=True) }}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация — ВИННИ{% endblock %}
+
+{% block content %}
+<section class="max-w-md mx-auto px-4 py-16">
+  <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-8">
+    <h1 class="text-2xl font-bold text-white">Регистрация</h1>
+    <p class="mt-1 text-sm text-slate-400">Создайте аккаунт по email и паролю.</p>
+
+    <form method="post" action="/register" class="mt-6 space-y-4">
+      <div>
+        <label class="block text-sm text-slate-300 mb-1.5" for="email">Email</label>
+        <input id="email" name="email" type="email" required autocomplete="email"
+               class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-brand-500 transition-colors"
+               placeholder="example@yandex.ru">
+      </div>
+      <div>
+        <label class="block text-sm text-slate-300 mb-1.5" for="password">Пароль</label>
+        <input id="password" name="password" type="password" required minlength="8" autocomplete="new-password"
+               class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none focus:border-brand-500 transition-colors"
+               placeholder="Пароль от 8 символов (буквы и цифры)">
+        <p class="mt-1.5 text-xs text-slate-500">Пароль должен содержать не менее 8 символов.</p>
+      </div>
+      <button type="submit" class="w-full rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold px-4 py-3 transition-colors">
+        Создать аккаунт
+      </button>
+    </form>
+
+    <p class="mt-5 text-sm text-slate-400">
+      Уже есть аккаунт?
+      <a href="/login" class="text-brand-400 hover:text-brand-300">Войти</a>
+    </p>
+  </div>
+</section>
+{% endblock %}
