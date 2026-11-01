@@ -58,6 +58,9 @@ OWNER_NAME = os.getenv("OWNER_NAME", "[Ваше ФИО]")
 OWNER_INN = os.getenv("OWNER_INN", "[Ваш ИНН]")
 CONTACT_EMAIL = os.getenv("CONTACT_EMAIL", "support@vinni.fyi")
 
+# --- Telegram-бот ---
+BOT_USERNAME = os.getenv("BOT_USERNAME", "")
+
 # --- ЮKassa (приём платежей: СБП, QR, карты) ---
 # YOOKASSA_ENABLED=true + заполненные ключи => реальные платежи.
 # Без ключей клиент работает в mock-режиме (для тестов).

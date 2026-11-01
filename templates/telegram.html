@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Telegram-бот — ВИННИ{% endblock %}
+
+{% block content %}
+<section class="max-w-2xl mx-auto px-4 py-16">
+  <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-8">
+    <h1 class="text-2xl font-bold text-white">Telegram-бот</h1>
+    <p class="mt-1 text-sm text-slate-400">
+      Привяжите Telegram, чтобы получать уведомления об окончании подписки.
+    </p>
+
+    <div class="mt-6 rounded-xl border border-slate-800 bg-slate-950 p-5">
+      <p class="text-sm text-slate-400">Ваш код привязки (действует 15 минут):</p>
+      <p class="mt-2 text-3xl font-extrabold tracking-widest text-brand-300">{{ link_code }}</p>
+    </div>
+
+    <ol class="mt-6 space-y-2 text-sm text-slate-300 list-decimal list-inside">
+      <li>Откройте бота {% if bot_username %}<a href="https://t.me/{{ bot_username }}" target="_blank" rel="noopener" class="text-brand-400 hover:text-brand-300">@{{ bot_username }}</a>{% else %}ВИННИ в Telegram{% endif %}.</li>
+      <li>Отправьте команду: <code class="text-brand-300">/start {{ link_code }}</code></li>
+      <li>Готово — аккаунт привязан ✅</li>
+    </ol>
+
+    {% if bot_username %}
+      <a href="https://t.me/{{ bot_username }}?start={{ link_code }}"
+         target="_blank" rel="noopener"
+         class="mt-6 inline-block rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold px-5 py-3 transition-colors">
+        Открыть бота и привязать
+      </a>
+    {% endif %}
+
+    <p class="mt-6">
+      <a href="/dashboard" class="text-sm text-brand-400 hover:text-brand-300">← Вернуться в кабинет</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

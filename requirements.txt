@@ -8,3 +8,5 @@ bcrypt
 python-dotenv
 httpx
 slowapi
+aiogram
+apscheduler

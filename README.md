@@ -93,7 +93,38 @@ static/         # статика и файлы загрузок (static/download
 - `REMNAWAVE_HWID_LIMIT`, `REMNAWAVE_TRAFFIC_LIMIT_BYTES`, `REMNAWAVE_TIMEOUT`
 - `SQUAD_UUID_1M`, `SQUAD_UUID_3M`, `SQUAD_UUID_12M`
 
-## Оплата (заглушка)
+## Оплата (ЮKassa)
 
-`/dashboard/pay` — тестовая страница пополнения (ЮKassa / СБП). Реальная оплата
-и вебхуки появятся позже; сейчас сумма зачисляется мгновенно.
+`/dashboard/pay` — пополнение баланса; тарифы можно оплатить через **СБП (QR-код)**
+(`/dashboard/pay/sbp`) или кнопкой «Купить». В проде с включённой ЮKassa баланс не
+списывается — пользователь уходит на страницу оплаты, а подписка активируется по
+**вебхуку** `POST /webhook/yookassa`. Без ключей ЮKassa работает mock-режим.
+
+Переменные: `YOOKASSA_ENABLED`, `YOOKASSA_SHOP_ID`, `YOOKASSA_SECRET_KEY`, `YOOKASSA_RETURN_URL`.
+
+## Telegram-бот (aiogram 3)
+
+Отдельный сервис `bot/` (long polling). Возможности:
+
+- **Отчёт админу** каждые `REPORT_INTERVAL_HOURS` часов: топ-5 по трафику и
+  подозрительные аккаунты (**>N уникальных IP за 24ч**).
+- **Кнопка «Забанить»** под подозрительным аккаунтом → `disable` в панели Remnawave.
+- **Привязка аккаунта**: код в кабинете (`/dashboard/telegram`) → `/start <код>` в боте.
+
+Переменные: `BOT_TOKEN`, `BOT_USERNAME`, `ADMIN_TELEGRAM_ID`, `REPORT_INTERVAL_HOURS`,
+`SUSPICIOUS_IP_THRESHOLD`.
+
+Запуск бота локально:
+
+```powershell
+uv run python -m bot.main
+```
+
+## Docker
+
+`Dockerfile` + `docker-compose.yml` (сервисы `web` и `bot`, общий SQLite-том с WAL):
+
+```bash
+touch vinni.db        # чтобы смонтировать файл, а не папку
+docker compose up -d --build
+```

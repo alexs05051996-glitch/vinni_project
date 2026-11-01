@@ -304,6 +304,7 @@ def buy(
         is_active=True,
         expires_at=expires_at,
         remnawave_uuid=remna_user.uuid,
+        remnawave_id=remna_user.numeric_id,
         subscription_url=remna_user.subscription_url,
     )
     try:
@@ -363,6 +364,7 @@ def trial(
         is_active=True,
         expires_at=expires_at,
         remnawave_uuid=remna_user.uuid,
+        remnawave_id=remna_user.numeric_id,
         subscription_url=remna_user.subscription_url,
     )
     user.has_used_trial = True
@@ -489,6 +491,7 @@ async def yookassa_webhook(
         is_active=True,
         expires_at=expires_at,
         remnawave_uuid=remna_user.uuid,
+        remnawave_id=remna_user.numeric_id,
         subscription_url=remna_user.subscription_url,
         payment_id=payment_id,
     )

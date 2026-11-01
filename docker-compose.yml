@@ -1,0 +1,22 @@
+# ВИННИ: веб-приложение + Telegram-бот (общий SQLite-том, WAL).
+# Перед запуском: `touch vinni.db` (чтобы смонтировать файл, а не папку) и заполнить .env.
+services:
+  web:
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    env_file: .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./vinni.db:/app/vinni.db
+    restart: unless-stopped
+
+  bot:
+    build: .
+    command: python -m bot.main
+    env_file: .env            # BOT_TOKEN, ADMIN_TELEGRAM_ID, REMNAWAVE_*, ENVIRONMENT
+    volumes:
+      - ./vinni.db:/app/vinni.db
+    depends_on:
+      - web
+    restart: unless-stopped

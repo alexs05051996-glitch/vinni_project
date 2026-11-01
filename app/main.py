@@ -17,7 +17,7 @@ from app.ratelimit import (
     rate_limit_exceeded_handler,
     too_many_requests_handler,
 )
-from app.routers import admin, auth, downloads, pages, subscriptions
+from app.routers import admin, auth, downloads, pages, subscriptions, telegram
 from app.templating import render
 
 
@@ -60,3 +60,4 @@ app.include_router(auth.router)
 app.include_router(subscriptions.router)
 app.include_router(admin.router)
 app.include_router(downloads.router)
+app.include_router(telegram.router)

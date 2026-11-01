@@ -35,6 +35,8 @@ class RemnawaveUser:
     username: str
     subscription_url: str
     expire_at: Optional[str] = None
+    # Числовой id пользователя в панели (для disable/enable/...)
+    numeric_id: Optional[int] = None
     raw: dict[str, Any] = field(default_factory=dict)
 
 
@@ -144,12 +146,14 @@ class RemnawaveClient:
                 f"{body}"
             )
 
+        numeric_id = body.get("id")
         return RemnawaveUser(
             uuid=str(rw_uuid),
             short_uuid=body.get("shortUuid", ""),
             username=body.get("username", username),
             subscription_url=sub_url,
             expire_at=body.get("expireAt", expire_iso),
+            numeric_id=int(numeric_id) if numeric_id is not None else None,
             raw=body,
         )
 
@@ -166,8 +170,95 @@ class RemnawaveClient:
             username=username,
             subscription_url=f"{base}/mock/{fake_uuid}",
             expire_at=expire_iso,
+            numeric_id=int(_uuid.uuid4().int % 100000),
             raw={"mock": True, "username": username},
         )
+
+
+    # --- данные для отчётов и модерации ---
+
+    def _request(self, method: str, path: str, **kwargs: Any) -> Any:
+        url = f"{self.base_url}{path}"
+        try:
+            with httpx.Client(timeout=self.timeout) as client:
+                response = client.request(method, url, headers=self._headers, **kwargs)
+        except httpx.HTTPError as exc:
+            raise RemnawaveError(f"Не удалось подключиться к панели Remnawave: {exc}") from exc
+        if response.status_code >= 400:
+            raise RemnawaveError(f"API Remnawave вернуло {response.status_code}: {response.text[:300]}")
+        try:
+            return response.json()
+        except ValueError as exc:
+            raise RemnawaveError("Некорректный ответ API Remnawave (не JSON).") from exc
+
+    @staticmethod
+    def _unwrap(data: Any) -> Any:
+        return data.get("response", data) if isinstance(data, dict) else data
+
+    def list_users(self) -> list[dict]:
+        """Список пользователей панели (с трафиком, если он есть в ответе)."""
+        if not self.enabled:
+            return []
+        data = self._unwrap(self._request("GET", "/api/users"))
+        return data if isinstance(data, list) else []
+
+    def find_user(
+        self,
+        *,
+        numeric_id: Optional[int] = None,
+        short_uuid: Optional[str] = None,
+        username: Optional[str] = None,
+    ) -> Optional[dict]:
+        if not self.enabled:
+            return None
+        if numeric_id is not None:
+            data = self._unwrap(self._request("GET", f"/api/users/{numeric_id}"))
+        elif short_uuid:
+            data = self._unwrap(self._request("GET", f"/api/users/by-short-uuid/{short_uuid}"))
+        elif username:
+            data = self._unwrap(self._request("GET", f"/api/users/by-username/{username}"))
+        else:
+            return None
+        return data if isinstance(data, dict) else None
+
+    def disable_user(self, numeric_id: int) -> dict:
+        """Блокирует пользователя в панели (бан)."""
+        if not self.enabled:
+            logger.warning("Remnawave MOCK: disable user %s", numeric_id)
+            return {"mock": True, "id": numeric_id, "status": "DISABLED"}
+        data = self._unwrap(self._request("POST", f"/api/users/{numeric_id}/actions/disable"))
+        return data if isinstance(data, dict) else {}
+
+    def user_ip_addresses(self, numeric_id: int, wait_seconds: float = 8.0) -> list[str]:
+        """Уникальные IP пользователя через асинхронную job connections."""
+        if not self.enabled:
+            return []
+        import time
+
+        data = self._unwrap(self._request("POST", f"/api/connections/by-user/{numeric_id}"))
+        job = data if isinstance(data, dict) else {}
+        job_id = job.get("jobId") or job.get("job_id")
+        if not job_id:
+            return []
+
+        deadline = time.time() + wait_seconds
+        while time.time() < deadline:
+            payload = self._unwrap(self._request("GET", f"/api/connections/by-user/{job_id}"))
+            payload = payload if isinstance(payload, dict) else {}
+            is_done = payload.get("isCompleted", payload.get("is_done"))
+            if is_done:
+                connections = payload.get("connections") or payload.get("data") or []
+                ips: set[str] = set()
+                for item in connections:
+                    if not isinstance(item, dict):
+                        continue
+                    ip = item.get("ip") or item.get("ipAddress") or (item.get("metadata") or {}).get("ip")
+                    if ip:
+                        ips.add(str(ip))
+                return sorted(ips)
+            time.sleep(1.0)
+        logger.warning("connections job %s не завершилась за %ss", job_id, wait_seconds)
+        return []
 
 
 def get_client() -> RemnawaveClient:

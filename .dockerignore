@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.git/
+.gitignore
+vinni.db
+*.sqlite3
+.env
+.vscode/
+.idea/
+static/downloads/*.zip
