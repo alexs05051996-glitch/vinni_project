@@ -13,6 +13,7 @@ _EXPECTED_COLUMNS: dict[str, dict[str, str]] = {
     "subscriptions": {
         "remnawave_uuid": "VARCHAR(36)",
         "subscription_url": "VARCHAR(512)",
+        "payment_id": "VARCHAR(64)",
     },
     "users": {
         "has_used_trial": "BOOLEAN DEFAULT 0",

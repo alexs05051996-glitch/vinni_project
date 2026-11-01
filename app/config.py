@@ -58,6 +58,15 @@ OWNER_NAME = os.getenv("OWNER_NAME", "[Ваше ФИО]")
 OWNER_INN = os.getenv("OWNER_INN", "[Ваш ИНН]")
 CONTACT_EMAIL = os.getenv("CONTACT_EMAIL", "support@vinni.fyi")
 
+# --- ЮKassa (приём платежей: СБП, QR, карты) ---
+# YOOKASSA_ENABLED=true + заполненные ключи => реальные платежи.
+# Без ключей клиент работает в mock-режиме (для тестов).
+YOOKASSA_ENABLED = _get_bool("YOOKASSA_ENABLED", False)
+YOOKASSA_SHOP_ID = os.getenv("YOOKASSA_SHOP_ID", "")
+YOOKASSA_SECRET_KEY = os.getenv("YOOKASSA_SECRET_KEY", "")
+YOOKASSA_RETURN_URL = os.getenv("YOOKASSA_RETURN_URL", "https://vinni.fyi/dashboard")
+YOOKASSA_API_URL = os.getenv("YOOKASSA_API_URL", "https://api.yookassa.ru/v3")
+
 # --- Интеграция с панелью Remnawave ---
 # REMNAWAVE_ENABLED=false включает mock-режим (без обращения к панели)
 REMNAWAVE_ENABLED = _get_bool("REMNAWAVE_ENABLED", False)

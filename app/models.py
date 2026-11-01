@@ -65,6 +65,8 @@ class Subscription(Base):
     # Данные из панели Remnawave (для подписок, созданных через покупку)
     remnawave_uuid = Column(String(36), nullable=True, index=True)
     subscription_url = Column(String(512), nullable=True)
+    # Идентификатор платежа ЮKassa (для идемпотентности вебхука)
+    payment_id = Column(String(64), nullable=True, index=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     user = relationship("User", back_populates="subscriptions")

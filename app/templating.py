@@ -12,6 +12,7 @@ from app.config import (
     IS_PRODUCTION,
     OWNER_INN,
     OWNER_NAME,
+    YOOKASSA_ENABLED,
 )
 from app.flash import pop_flashes
 
@@ -24,6 +25,8 @@ templates.env.globals["IS_PRODUCTION"] = IS_PRODUCTION
 templates.env.globals["owner_name"] = OWNER_NAME
 templates.env.globals["owner_inn"] = OWNER_INN
 templates.env.globals["contact_email"] = CONTACT_EMAIL
+# Приём платежей через ЮKassa (в проде + включена)
+templates.env.globals["yookassa_active"] = IS_PRODUCTION and YOOKASSA_ENABLED
 
 
 def render(

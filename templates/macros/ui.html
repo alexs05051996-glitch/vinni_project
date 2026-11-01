@@ -22,6 +22,14 @@
         Купить за {{ '%.0f'|format(plan.price) }} ₽
       </button>
     </form>
+    {% if yookassa_active %}
+      <form method="post" action="/dashboard/pay/sbp" class="mt-2">
+        <input type="hidden" name="plan" value="{{ plan_key }}">
+        <button type="submit" class="w-full rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-100 font-medium px-4 py-3 transition-colors">
+          Оплатить через СБП (QR-код)
+        </button>
+      </form>
+    {% endif %}
   {% else %}
     <a href="/login" class="mt-6 w-full text-center rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold px-4 py-3 transition-colors">
       Выбрать тариф
