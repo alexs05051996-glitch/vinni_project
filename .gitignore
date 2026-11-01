@@ -12,6 +12,9 @@ venv/
 vinni.db
 *.sqlite3
 
+# Archives / large downloads (не коммитим)
+*.zip
+
 # IDE / OS
 .vscode/
 .idea/
